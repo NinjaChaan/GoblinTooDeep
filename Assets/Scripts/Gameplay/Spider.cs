@@ -124,7 +124,7 @@ public class Spider : MonoBehaviour
             return;
         }
         
-        if (Random.Range(0, 1f) < 0.2f)
+        if (Random.Range(0, 1f) < 0.1f)
         {
             FindTargetGem();
         }

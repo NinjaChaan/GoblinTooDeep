@@ -8,7 +8,8 @@ public class SpiderHole : MonoBehaviour
     public GameObject spiderPrefab;
     public float initialSpawnDelayMin = 5f;
     public float initialSpawnDelayMax = 30f;
-    public float spawningDelay = 30f;
+    public float minSpawningDelay = 30f;
+    public float maxSpawningDelay = 60f;
 
     public int maxSpidersSpawned = 10;
     
@@ -17,7 +18,7 @@ public class SpiderHole : MonoBehaviour
     void Start()
     {
         float initialDelay = Random.Range(initialSpawnDelayMin, initialSpawnDelayMax);
-        InvokeRepeating(nameof(SpawnSpider), initialDelay, spawningDelay);
+        Invoke(nameof(SpawnSpider), initialDelay);
     }
     
     private void SpawnSpider()
@@ -30,5 +31,8 @@ public class SpiderHole : MonoBehaviour
         
         var spider = Instantiate(spiderPrefab, transform.position, Quaternion.identity);
         spider.GetComponent<Spider>().spiderHole = transform;
+        
+        float delay = Random.Range(minSpawningDelay, maxSpawningDelay);
+        Invoke(nameof(SpawnSpider), delay);
     }
 }

@@ -25,7 +25,6 @@ public class TopDownCharacterController : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true;
     }
     
     private void Update()
@@ -54,8 +53,7 @@ public class TopDownCharacterController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
         
-        // Normalize the input vector to prevent faster diagonal movement
-        moveInput = new Vector2(horizontalInput, verticalInput).normalized;
+        moveInput = Vector2.ClampMagnitude(new Vector2(horizontalInput, verticalInput), 1);
     }
     
     private bool CheckForKeyboardInput()

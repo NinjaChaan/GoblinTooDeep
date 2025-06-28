@@ -17,6 +17,7 @@ public class SceneManager : MonoBehaviour
     public List<SceneDescriptor> RegularRooms;
     public List<SceneDescriptor> ShopRooms;
 
+    public SceneDescriptor CurrentScene => _currentScene;
 
     private SceneDescriptor _currentScene;
     private bool _isLoadingScene = false;

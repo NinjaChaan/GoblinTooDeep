@@ -13,7 +13,8 @@ public class OreRock : InteractableObject
     public GameObject rubbleVfx;
     public GameObject rubbleSmolVfx;
     public int gemCount = 3;
-    public int hitpoints = 5;
+    public int hitpoints = 7;
+    public float gemChancePerHit = 0.3f;
     public Vector2 explosionForceMinMax = new Vector2(5f, 10f);
 
     public List<Material> gemMaterials;
@@ -47,20 +48,29 @@ public class OreRock : InteractableObject
             GetComponentInChildren<Collider>().enabled = false;
             for (int i = 0; i < gemCount; i++)
             {
-                GameObject gem = Instantiate(gemPrefab, transform.position, Random.rotation);
-
-                Vector3 randomDirection = Random.onUnitSphere;
-                randomDirection.y = Mathf.Abs(randomDirection.y);
-                float explosionForce = Random.Range(explosionForceMinMax.x, explosionForceMinMax.y);
-                var rb = gem.GetComponent<Rigidbody>();
-                rb.AddForce(randomDirection * explosionForce, ForceMode.Impulse);
-                rb.AddTorque(Random.onUnitSphere * explosionForce, ForceMode.Impulse);
-                gem.GetComponent<Renderer>().material = gemMaterials[Random.Range(0, gemMaterials.Count)];
+                SpawnGem();
             }
 
             Instantiate(rubbleVfx, transform.position, Quaternion.identity);
             mineablePart.SetActive(false);
         }
+        else if (Random.Range(0f, 1f) < gemChancePerHit)
+        {
+            SpawnGem();
+        }
+    }
+
+    private void SpawnGem()
+    {
+        GameObject gem = Instantiate(gemPrefab, transform.position, Random.rotation);
+
+        Vector3 randomDirection = Random.onUnitSphere;
+        randomDirection.y = Mathf.Abs(randomDirection.y);
+        float explosionForce = Random.Range(explosionForceMinMax.x, explosionForceMinMax.y);
+        var rb = gem.GetComponent<Rigidbody>();
+        rb.AddForce(randomDirection * explosionForce, ForceMode.VelocityChange);
+        rb.AddTorque(Random.onUnitSphere * explosionForce, ForceMode.Impulse);
+        gem.GetComponent<Renderer>().material = gemMaterials[Random.Range(0, gemMaterials.Count)];
     }
 
     public override bool IsInteractable => hitpoints > 0;

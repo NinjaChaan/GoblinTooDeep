@@ -6,6 +6,14 @@ public class GemScript : MonoBehaviour
 {
     public bool isCarried = false;
 
+    private void Update()
+    {
+        if (transform.position.y < -10)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private void OnCollisionEnter(Collision other)
     {
         if(other.gameObject.CompareTag("Player"))
