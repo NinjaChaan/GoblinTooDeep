@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class Spider : MonoBehaviour
@@ -9,28 +10,59 @@ public class Spider : MonoBehaviour
     public float speed = 0.1f;
     public float speedWithGem = 0.1f;
 
-    private Rigidbody rb;
+    // private Rigidbody rb;
     public Transform gemHoldPoint;
 
     private bool isHoldingGem = false;
     public Transform spiderHole; // Reference to the spider hole where the gem will be dropped
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private GameObject[] torches = Array.Empty<GameObject>(); // Array to hold all torch objects in the scene
+
+    public float torchEscapeDistance = 5f; // Distance at which the spider will escape from the torch
+
+    private bool avoidingTorch = false; // Flag to check if the spider is currently avoiding a torch
+
+    private NavMeshAgent navMeshAgent; // Reference to the NavMeshAgent component for pathfinding
+    private NavMeshPath path;
+
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        // rb = GetComponent<Rigidbody>();
+        navMeshAgent = GetComponent<NavMeshAgent>();
         // Start checking for gems in the scene
         StartCoroutine(CheckForGems());
+        StartCoroutine(CheckForTorches());
     }
 
     // Update is called once per frame
     void Update()
     {
+        avoidingTorch = false; // Reset the avoidingTorch flag at the start of each update
+        if (torches.Length > 0)
+        {
+            foreach (var torch in torches)
+            {
+                if (Vector3.Distance(torch.transform.position, transform.position) < torchEscapeDistance)
+                {
+                    avoidingTorch = true; // Set the flag to indicate the spider is avoiding a torch
+                    // If the spider is too close to a torch, escape in a random direction
+                    Vector3 escapeDirection = (transform.position - torch.transform.position).normalized;
+                    //rb.MovePosition(transform.position + escapeDirection * (speed * Time.deltaTime));
+                    // Rotate away from the torch
+                    Quaternion lookRotation = Quaternion.LookRotation(escapeDirection);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+                    break;
+                }
+            }
+        }
+
         if (targetGem && !isHoldingGem)
         {
+            navMeshAgent.destination = targetGem.transform.position;
             // Move towards the target gem
             Vector3 direction = (targetGem.transform.position - transform.position).normalized;
-            rb.MovePosition(transform.position + direction * (speed * Time.deltaTime));
+            // rb.MovePosition(transform.position + direction * (speed * Time.deltaTime));
+            //navMeshAgent.Move(direction * (speed * Time.deltaTime));
             // Rotate towards the target gem
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
@@ -38,9 +70,11 @@ public class Spider : MonoBehaviour
 
         if (isHoldingGem)
         {
+            navMeshAgent.destination = spiderHole.position;
             //Move towards spiderhole
             Vector3 direction = (spiderHole.position - transform.position).normalized;
-            rb.MovePosition(transform.position + direction * (speedWithGem * Time.deltaTime));
+            // navMeshAgent.Move(direction * (speed * Time.deltaTime));
+            // rb.MovePosition(transform.position + direction * (speedWithGem * Time.deltaTime));
             // Rotate towards the spider hole
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
@@ -51,12 +85,26 @@ public class Spider : MonoBehaviour
     {
         if (other.transform.CompareTag("Gem"))
         {
+            if (isHoldingGem)
+            {
+                return; // If already holding a gem, do nothing
+            }
             isHoldingGem = true;
             targetGem.transform.parent = transform;
-            targetGem.GetComponent<Rigidbody>().isKinematic =
-                true; // Make the gem kinematic to stop physics interactions
+            // targetGem.GetComponent<Rigidbody>().isKinematic =
+            //     true; // Make the gem kinematic to stop physics interactions
             targetGem.GetComponent<Collider>().enabled = false; // Disable collider for the gem
             targetGem.transform.position = gemHoldPoint.position;
+        }
+    }
+
+    private IEnumerator CheckForTorches()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(.1f);
+
+            torches = GameObject.FindGameObjectsWithTag("Torch");
         }
     }
 
@@ -64,7 +112,6 @@ public class Spider : MonoBehaviour
     {
         while (true)
         {
-            // Wait for 1 second before checking for gems again
             yield return new WaitForSeconds(1f);
             if (!targetGem)
             {
