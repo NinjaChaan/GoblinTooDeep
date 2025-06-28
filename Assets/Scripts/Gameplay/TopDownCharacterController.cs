@@ -66,7 +66,8 @@ public class TopDownCharacterController : MonoBehaviour
         return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || 
                Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) ||
                Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) ||
-               Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
+               Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow) ||
+               Input.GetMouseButton(0) || Input.GetMouseButton(1);
     }
     
     private bool CheckForGamepadInput()
@@ -97,13 +98,13 @@ public class TopDownCharacterController : MonoBehaviour
         ControllingType newControlType = currentControlType;
         
         // Prioritize the most recent input
-        if (gamepadActive)
-        {
-            newControlType = ControllingType.Gamepad;
-        }
-        else if (keyboardActive)
+        if (keyboardActive)
         {
             newControlType = ControllingType.Keyboard;
+        }
+        else if (gamepadActive)
+        {
+            newControlType = ControllingType.Gamepad;
         }
         
         // If control type changed, notify listeners
