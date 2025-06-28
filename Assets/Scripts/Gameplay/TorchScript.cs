@@ -4,9 +4,11 @@ using UnityEngine;
 public class TorchScript : InteractableObject
 {
     private Rigidbody rb;
+    private TorchLightFlicker torchLightFlicker;
         
     void Start()
     {
+        torchLightFlicker = GetComponentInChildren<TorchLightFlicker>();
         rb = GetComponent<Rigidbody>();
         AttachToPlayer();
     }
@@ -24,6 +26,12 @@ public class TorchScript : InteractableObject
         
         PlayerScript.Instance.carryingTorch = true;
         rb.isKinematic = true;
+
+        if (PlayerScript.Instance.PickSelected)
+        {
+            gameObject.SetActive(false);
+            torchLightFlicker.SetLightOnOff(false);
+        }
     }
     
     public void Throw()
@@ -38,6 +46,13 @@ public class TorchScript : InteractableObject
     public override InteractButton InteractButton => InteractButton.Pickup;
     public override void Interact()
     {
+        // ToggleTorchLight(true);
         AttachToPlayer();
+    }
+    
+    public void ToggleTorchLight(bool isOn)
+    {
+        torchLightFlicker.SetLightOnOff(isOn);
+        gameObject.SetActive(isOn);
     }
 }

@@ -36,4 +36,9 @@ public class TorchLightFlicker : MonoBehaviour
             yield return new WaitForSeconds(flickerSpeed);
         }
     }
+
+    public void SetLightOnOff(bool isOn)
+    {
+        torchLight.enabled = isOn;
+    }
 }

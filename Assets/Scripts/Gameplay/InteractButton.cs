@@ -4,6 +4,7 @@ namespace Gameplay
     {
         Mine,
         Pickup,
-        Throw
+        Throw,
+        SwitchTool
     }
 }

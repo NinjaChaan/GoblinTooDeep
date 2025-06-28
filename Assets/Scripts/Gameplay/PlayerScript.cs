@@ -15,6 +15,7 @@ namespace Gameplay
 
         public bool carryingSack = false;
         public bool carryingTorch = false;
+        public bool carryingPick = true;
 
 
         List<InteractableObject> interactableObjects = new List<InteractableObject>();
@@ -25,6 +26,10 @@ namespace Gameplay
         public TopDownCharacterController Controller { get; private set; }
         public SackScript Sack { get; private set; }
         public TorchScript Torch { get; private set; }
+
+        public GameObject PickAxe;
+
+        public bool PickSelected = false;
 
         private void Awake()
         {
@@ -53,6 +58,25 @@ namespace Gameplay
 
         public void Update()
         {
+            if (Input.GetButtonDown(InteractButton.SwitchTool.ToString()))
+            {
+                if (PickSelected)
+                {
+                    PickAxe.SetActive(false);
+                    Torch.ToggleTorchLight(true);
+                    PickSelected = false;
+                }
+                else
+                {
+                    PickSelected = true;
+                    PickAxe.SetActive(true);
+                    if (carryingTorch)
+                    {
+                        Torch.ToggleTorchLight(false);
+                    }
+                }
+            }
+
             InteractableObject closestInteractable = null;
             float closestDistance = interactRange;
             float closestDotProduct = 0f;
@@ -107,7 +131,7 @@ namespace Gameplay
                     }
                 }
 
-                if (carryingTorch)
+                if (carryingTorch && !PickSelected)
                 {
                     if (Input.GetButtonDown(InteractButton.Throw.ToString()))
                     {
