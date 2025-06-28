@@ -8,6 +8,9 @@ public class SackScript : InteractableObject
     public int gems = 0;
 
     private Rigidbody rb;
+    
+    public AudioSource audioSource;
+    public AudioClip pickupSound;
         
     void Start()
     {
@@ -22,6 +25,12 @@ public class SackScript : InteractableObject
             Debug.LogWarning("SackScript: Sack has fallen out of the world!");
             AttachToPlayer();
         }
+    }
+
+    public void AddGem()
+    {
+        gems++;
+        audioSource.PlayOneShot(pickupSound);
     }
 
     public void AttachToPlayer()

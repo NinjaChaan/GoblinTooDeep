@@ -15,6 +15,9 @@ public class OreRock : InteractableObject
     public Vector2 explosionForceMinMax = new Vector2(5f, 10f);
 
     public List<Material> gemMaterials;
+    
+    public AudioSource audioSource;
+    public AudioClip hitSound;
 
     void Start()
     {
@@ -32,6 +35,7 @@ public class OreRock : InteractableObject
 
     private void RockHit()
     {
+        audioSource.PlayOneShot(hitSound);
         Instantiate(sparkVfx, transform.position, Quaternion.identity);
         Instantiate(rubbleSmolVfx, transform.position, Quaternion.identity);
         hitpoints--;
