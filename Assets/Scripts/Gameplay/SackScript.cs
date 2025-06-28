@@ -48,6 +48,9 @@ public class SackScript : InteractableObject
         transform.parent = null;
         PlayerScript.Instance.carryingSack = false;
         rb.isKinematic = false;
+        
+        float randomForce = Random.Range(1f, 3f);
+        rb.AddForce(PlayerScript.Instance.transform.forward * -randomForce, ForceMode.VelocityChange);
     }
 
     public override bool IsInteractable => !PlayerScript.Instance.carryingSack;
