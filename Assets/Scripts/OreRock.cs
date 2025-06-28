@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Gameplay;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class OreRock : MonoBehaviour
+public class OreRock : InteractableObject
 {
     public GameObject gemPrefab;
     public GameObject sparkVfx;
@@ -39,7 +40,7 @@ public class OreRock : MonoBehaviour
         
         if(hitpoints <= 0)
         {
-            GetComponent<Collider>().enabled = false; 
+            GetComponentInChildren<Collider>().enabled = false;
             for (int i = 0; i < gemCount; i++)
             {
                 GameObject gem = Instantiate(gemPrefab, transform.position, Random.rotation);
@@ -55,5 +56,11 @@ public class OreRock : MonoBehaviour
             Instantiate(rubbleVfx, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
+    }
+
+    public override InteractButton InteractButton => InteractButton.Mine;
+    public override void Interact()
+    {
+        RockHit();
     }
 }
