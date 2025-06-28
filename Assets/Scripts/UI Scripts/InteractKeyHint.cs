@@ -11,24 +11,32 @@ namespace UI_Scripts
         public Sprite gamepadMineButtonHint;
         public Sprite keyboardPickupButtonHint;
         public Sprite gamepadPickupButtonHint;
+        public Sprite dropSackHint;
 
         public void Update()
         {
-            if (PlayerScript.Instance.IsInRangeOfInteractable && !PlayerScript.Instance.carryingSack)
+            if (PlayerScript.Instance.IsInRangeOfInteractable || PlayerScript.Instance.IsInRangeButSack)
             {
                 if (!image.enabled)
                 {
                     image.enabled = true;
                 }
-                
-                if (PlayerScript.Instance.CurrentInteractButton == InteractButton.Mine)
-                    image.sprite = PlayerScript.Instance.Controller.CurrentControlType == ControllingType.Keyboard
-                        ? keyboardMineButtonHint
-                        : gamepadMineButtonHint;
+
+                if (PlayerScript.Instance.IsInRangeButSack)
+                {
+                    image.sprite = dropSackHint;
+                }
                 else
-                    image.sprite = PlayerScript.Instance.Controller.CurrentControlType == ControllingType.Keyboard
-                        ? keyboardPickupButtonHint
-                        : gamepadPickupButtonHint;
+                {
+                    if (PlayerScript.Instance.CurrentInteractButton == InteractButton.Mine)
+                        image.sprite = PlayerScript.Instance.Controller.CurrentControlType == ControllingType.Keyboard
+                            ? keyboardMineButtonHint
+                            : gamepadMineButtonHint;
+                    else
+                        image.sprite = PlayerScript.Instance.Controller.CurrentControlType == ControllingType.Keyboard
+                            ? keyboardPickupButtonHint
+                            : gamepadPickupButtonHint;
+                }
             }
             else
             {

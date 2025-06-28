@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -14,16 +15,17 @@ public class Spider : MonoBehaviour
         FleeingTorch
     }
     
-    private GameObject targetGem;
+    private GemScript targetGem;
     public float speed = 0.1f;
     public float speedWithGem = 0.1f;
+    public float fleeSpeed = 4f;
     public float wanderDistance = 3f;
-    public float gemPickupRange = 0.3f;
-
+    public float gemPickupRange = 0.5f;
+    public float fleeDistance = 20f;
     // private Rigidbody rb;
     public Transform gemHoldPoint;
 
-    public GameObject holdingGem;
+    public GemScript holdingGem;
     private bool isHoldingGem = false;
     public Transform spiderHole; // Reference to the spider hole where the gem will be dropped
 
@@ -50,7 +52,7 @@ public class Spider : MonoBehaviour
         
         // rb = GetComponent<Rigidbody>();
         navMeshAgent = GetComponent<NavMeshAgent>();
-        // Start checking for gems in the scene
+        // Start checking for torches
         StartCoroutine(CheckForTorches());
         
         CurrentState = SpiderState.Idle;
@@ -80,8 +82,12 @@ public class Spider : MonoBehaviour
                 }
             }
         }
-        
-        if (isHoldingGem)
+
+        if (CurrentState == SpiderState.FleeingTorch)
+        {
+            navMeshAgent.speed = fleeSpeed;
+        }
+        else if (isHoldingGem)
         {
             navMeshAgent.speed = speedWithGem;
         } else
@@ -118,14 +124,14 @@ public class Spider : MonoBehaviour
             return;
         }
         
-        if (Random.Range(0, 1f) < 0.3f)
+        if (Random.Range(0, 1f) < 0.2f)
         {
             FindTargetGem();
         }
         else
         {
             navMeshAgent.destination = GetRandomNearTargetPosition();
-            idleTimer = Random.Range(1f, 5f);
+            idleTimer = Random.Range(1f, 10f);
         }
     }
 
@@ -136,9 +142,17 @@ public class Spider : MonoBehaviour
             CurrentState = SpiderState.Idle;
             return;
         }
+
+        if (targetGem.isCarried)
+        {
+            CurrentState = SpiderState.Idle;
+            targetGem = null;
+            return;
+        }
         if (HasPathEnded())
         {
             navMeshAgent.destination = targetGem.transform.position;
+            Debug.Log($"Chasing Gem ended Distance: {Vector3.Distance(transform.position, targetGem.transform.position)}, Range: {gemPickupRange}");
         }
 
         if (Vector3.Distance(transform.position, targetGem.transform.position) < gemPickupRange)
@@ -169,6 +183,7 @@ public class Spider : MonoBehaviour
     {
         if (HasPathEnded())
         {
+            Debug.Log("FleeingTorch ended");
             CurrentState = SpiderState.Idle;
             idleTimer = 5f;
         }
@@ -176,8 +191,17 @@ public class Spider : MonoBehaviour
 
     private void StartFlee(Transform torch)
     {
-        Vector3 fleeDirection = (transform.position - torch.position).normalized;
-        navMeshAgent.SetDestination(transform.position + fleeDirection * 10f); // Move away from the torch
+        Debug.Log("Fleeeee");
+        Vector3 fleeDirection = Vector3.Scale((transform.position - torch.position), new Vector3(1, 0, 1)).normalized;
+
+        float distance = fleeDistance;
+        while (distance > 0f)
+        {
+            Vector3 pos = transform.position + fleeDirection * distance;
+            if (navMeshAgent.SetDestination(pos)) // Move away from the torch
+                break;
+            distance -= 1f;
+        }
         
         CurrentState = SpiderState.FleeingTorch;
         
@@ -191,10 +215,17 @@ public class Spider : MonoBehaviour
         }
     }
 
-    private void GrabGem(GameObject gem)
+    private void GrabGem(GemScript gem)
     {
+        Debug.Log("Grabbing Gem");
+        if (gem.isCarried)
+        {
+            Debug.Log("Already Carrying");
+            return;
+        }
         if (isHoldingGem)
         {
+            Debug.Log("Already Holding");
             return; // If already holding a gem, do nothing
         }
         isHoldingGem = true;
@@ -203,8 +234,10 @@ public class Spider : MonoBehaviour
         targetGem.GetComponent<Collider>().enabled = false;
         targetGem.transform.position = gemHoldPoint.position;
         holdingGem = gem;
+        gem.isCarried = true;
 
         CurrentState = SpiderState.CarryingGem;
+        Debug.Log("Now carrying.");
     }
 
     private void DropGem()
@@ -212,6 +245,7 @@ public class Spider : MonoBehaviour
         holdingGem.transform.parent = null;
         holdingGem.GetComponent<Rigidbody>().isKinematic = false;
         holdingGem.GetComponent<Collider>().enabled = true;
+        holdingGem.isCarried = false;
         
         isHoldingGem = false;
         holdingGem = null;
@@ -233,7 +267,7 @@ public class Spider : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(.1f);
+            yield return new WaitForSeconds(.5f);
 
             torches = GameObject.FindGameObjectsWithTag("Torch");
         }
@@ -244,9 +278,10 @@ public class Spider : MonoBehaviour
         if (!targetGem)
         {
             GameObject[] gems = GameObject.FindGameObjectsWithTag("Gem");
+            gems = gems.Where(g => !g.GetComponent<GemScript>().isCarried).ToArray();
             if (gems.Length > 0)
             {
-                targetGem = gems[Random.Range(0, gems.Length)];
+                targetGem = gems[Random.Range(0, gems.Length)].GetComponent<GemScript>();
                 CurrentState = SpiderState.ChasingGem;
             }
         }

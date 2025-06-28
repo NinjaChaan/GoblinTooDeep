@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4598311594567329273}
   - component: {fileID: 8271030181981574380}
   - component: {fileID: 5694738687014302621}
-  m_Layer: 0
+  - component: {fileID: 1238883701708974936}
+  m_Layer: 8
   m_Name: OreRock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108,6 +109,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!208 &1238883701708974936
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3431753586233960332}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &4968824260678899523
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,6 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3243f8e4fc26fc44889c1000ba77fe07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mineablePart: {fileID: 3431753586233960332}
   gemPrefab: {fileID: 7776681082335304173, guid: e2f77e0a074fd9342ae756222cd9c565, type: 3}
   sparkVfx: {fileID: 5418817702639699371, guid: 8c9f0d86163620e4fa437cac22b0a725, type: 3}
   rubbleVfx: {fileID: 1213675118531609950, guid: 9e56d641df1c3734cae5c1db1dfad373, type: 3}

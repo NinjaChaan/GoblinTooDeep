@@ -21,6 +21,7 @@ namespace Gameplay
         List<InteractableObject> interactableObjects = new List<InteractableObject>();
 
         public bool IsInRangeOfInteractable { get; private set; }
+        public bool IsInRangeButSack { get; private set; }
         public InteractButton CurrentInteractButton { get; private set; }
 
         public TopDownCharacterController Controller { get; private set; }
@@ -84,11 +85,13 @@ namespace Gameplay
             {
                 if (!interactableObject)
                     continue;
+                if (!interactableObject.gameObject.activeSelf)
+                    continue;
+                if (!interactableObject.IsInteractable)
+                    continue;
 
                 Vector3 position = interactableObject.transform.position;
                 float distance = Vector3.Distance(position, transform.position);
-
-//                Debug.Log("distance to interactable " + interactableObject.name + ": " + distance);
 
                 float dotProduct = Vector3.Dot(transform.forward, (position - transform.position).normalized);
                 if (dotProduct < 0.25f)
@@ -103,12 +106,18 @@ namespace Gameplay
                 }
             }
 
-            if (closestInteractable != null && (!carryingSack || !carryingTorch))
+            bool closestIsTorch = closestInteractable != null && closestInteractable is TorchScript;
+            if (closestInteractable != null && (!carryingSack || closestIsTorch))
             {
                 IsInRangeOfInteractable = true;
+                IsInRangeButSack = false;
             }
             else
             {
+                if (closestInteractable)
+                {
+                    IsInRangeButSack = true;
+                }
                 IsInRangeOfInteractable = false;
             }
 

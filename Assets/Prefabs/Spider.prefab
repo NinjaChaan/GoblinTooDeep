@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5684838945126530762}
   - component: {fileID: 8427170243402764612}
   - component: {fileID: 1808782871259946871}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 8050804873840637910}
   - component: {fileID: 4412038380356566756}
   - component: {fileID: 5957644525071412261}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ GameObject:
   - component: {fileID: 811248927678582159}
   - component: {fileID: 8317174933364156421}
   - component: {fileID: 520332646229666837}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -336,7 +336,7 @@ GameObject:
   - component: {fileID: 5311459175482484709}
   - component: {fileID: 4966393299993895914}
   - component: {fileID: 6085762189669305683}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5882136115335469719}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GemHoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -475,7 +475,7 @@ GameObject:
   - component: {fileID: 2922982247454630194}
   - component: {fileID: 3380211766185559080}
   - component: {fileID: 1805028798537164226}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -583,7 +583,7 @@ GameObject:
   - component: {fileID: 7052366263298588877}
   - component: {fileID: 3383061620547756330}
   - component: {fileID: 4290010298198919415}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -693,7 +693,7 @@ GameObject:
   - component: {fileID: 4474776239097023970}
   - component: {fileID: 69518316371157384}
   - component: {fileID: 436773244851066273}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Spider
   m_TagString: Spider
   m_Icon: {fileID: 0}
@@ -809,14 +809,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 770f4a6ce923f3d47a2560b27d62dfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  speedWithGem: 2
-  wanderDistance: 3
-  gemPickupRange: 0.3
+  speed: 2.5
+  speedWithGem: 1.3
+  fleeSpeed: 4
+  wanderDistance: 5
+  gemPickupRange: 0.5
+  fleeDistance: 10
   gemHoldPoint: {fileID: 5882136115335469719}
   holdingGem: {fileID: 0}
   spiderHole: {fileID: 0}
-  torchEscapeDistance: 2
+  torchEscapeDistance: 3
   CurrentState: 0
 --- !u!195 &436773244851066273
 NavMeshAgent:
@@ -834,7 +836,7 @@ NavMeshAgent:
   m_AngularSpeed: 660
   m_StoppingDistance: 0.01
   m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
+  m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 1
   m_BaseOffset: 0.5
@@ -852,7 +854,7 @@ GameObject:
   - component: {fileID: 8475434186245236851}
   - component: {fileID: 2355591566923642428}
   - component: {fileID: 3831797636959611776}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

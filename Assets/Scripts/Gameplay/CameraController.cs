@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -5,40 +6,13 @@ public class CameraController : MonoBehaviour
 {
     [Header("Target Settings")]
     [SerializeField] private Transform target;
-    [SerializeField] private bool findPlayerOnStart = true;
     
     [Header("Follow Settings")]
     [SerializeField] private float smoothSpeed = 5f;
     
-    private Vector3 initialOffset;
-    private Quaternion initialRotation;
-    
-    private void Start()
-    {
-        if (findPlayerOnStart && target == null)
-        {
-            var player = GameObject.FindGameObjectWithTag("Player");
-            if (player != null)
-            {
-                target = player.transform;
-            }
-            else
-            {
-                Debug.LogWarning("CameraController: No player found with tag 'Player'");
-            }
-        }
-        
-        if (target != null)
-        {
-            // Store initial offset and distance
-            initialOffset = transform.position - target.position;
-            initialRotation = transform.rotation;
-        }
-        else
-        {
-            Debug.LogError("CameraController: No target assigned!");
-        }
-    }
+    [SerializeField] private Vector3 initialOffset;
+    [SerializeField] private Quaternion initialRotation;
+ 
     
     private void LateUpdate()
     {
@@ -61,5 +35,19 @@ public class CameraController : MonoBehaviour
     public void SetTarget(Transform newTarget)
     {
         target = newTarget;
+    }
+
+    private void OnValidate()
+    {
+        var player = GameObject.FindGameObjectWithTag("Player");
+        if (player && !target)
+            target = player.transform;
+        
+        if (target != null)
+        {
+            // Store initial offset and distance
+            initialOffset = transform.position - target.position;
+            initialRotation = transform.rotation;
+        }
     }
 }

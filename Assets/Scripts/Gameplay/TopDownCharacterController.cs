@@ -9,9 +9,7 @@ public class TopDownCharacterController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 10f;
-    [SerializeField] private float inputSwitchThreshold = 0.1f;
-
-
+    
     [SerializeField] private float moveSpeedWithSack = 2f;
     
     private Rigidbody rb;
@@ -73,8 +71,6 @@ public class TopDownCharacterController : MonoBehaviour
     private bool CheckForGamepadInput()
     {
         // Check for gamepad stick movement
-        float gamepadHorizontal = Input.GetAxis("Horizontal");
-        float gamepadVertical = Input.GetAxis("Vertical");
         
         // Check for any gamepad button press
         bool anyGamepadButton = false;
@@ -88,9 +84,7 @@ public class TopDownCharacterController : MonoBehaviour
         }
         
         // Return true if there's significant stick movement or any button press
-        return (Mathf.Abs(gamepadHorizontal) > inputSwitchThreshold || 
-                Mathf.Abs(gamepadVertical) > inputSwitchThreshold || 
-                anyGamepadButton);
+        return (anyGamepadButton);
     }
     
     private void UpdateControlType(bool keyboardActive, bool gamepadActive)

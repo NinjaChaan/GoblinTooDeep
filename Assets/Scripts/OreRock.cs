@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using Gameplay;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class OreRock : InteractableObject
 {
+    public GameObject mineablePart;
     public GameObject gemPrefab;
     public GameObject sparkVfx;
     public GameObject rubbleVfx;
@@ -57,10 +59,11 @@ public class OreRock : InteractableObject
             }
 
             Instantiate(rubbleVfx, transform.position, Quaternion.identity);
-            Destroy(gameObject);
+            mineablePart.SetActive(false);
         }
     }
 
+    public override bool IsInteractable => hitpoints > 0;
     public override InteractButton InteractButton => InteractButton.Mine;
 
     public override void Interact()
