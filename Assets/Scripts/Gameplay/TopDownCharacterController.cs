@@ -4,15 +4,19 @@ using Gameplay;
 using System;
 
 [RequireComponent(typeof(Rigidbody))] // Required for FixedUpdate
+[RequireComponent(typeof(PlayerScript))]
 public class TopDownCharacterController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private float inputSwitchThreshold = 0.1f;
+
+
+    [SerializeField] private float moveSpeedWithSack = 2f;
     
     private Rigidbody rb;
     private Vector2 moveInput;
-    
+
     [SerializeField]
     public ControllingType currentControlType = ControllingType.Keyboard;
     
@@ -112,7 +116,13 @@ public class TopDownCharacterController : MonoBehaviour
     
     private void Move()
     {
-        Vector3 movement = new Vector3(moveInput.x, 0f, moveInput.y) * moveSpeed * Time.fixedDeltaTime;
+        float mSpeed = moveSpeed;
+        if (PlayerScript.Instance.carryingSack)
+        {
+            mSpeed = moveSpeedWithSack;
+        }
+
+        Vector3 movement = new Vector3(moveInput.x, 0f, moveInput.y) * mSpeed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + movement);
     }
     
