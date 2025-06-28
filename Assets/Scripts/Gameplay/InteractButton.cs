@@ -3,6 +3,7 @@ namespace Gameplay
     public enum InteractButton
     {
         Mine,
-        Pickup
+        Pickup,
+        Throw
     }
 }

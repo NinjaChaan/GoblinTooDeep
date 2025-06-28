@@ -9,28 +9,34 @@ namespace Gameplay
         public static PlayerScript Instance;
 
         public float interactRange = 3f;
-        
+
         public Transform SackAttachPoint;
         public Transform HandAttachPoint;
-        
+
         public bool carryingSack = false;
-        
-        
+        public bool carryingTorch = false;
+
+
         List<InteractableObject> interactableObjects = new List<InteractableObject>();
 
-        public bool IsInRangeOfInteractable { get; private set;}
+        public bool IsInRangeOfInteractable { get; private set; }
         public InteractButton CurrentInteractButton { get; private set; }
-        
+
         public TopDownCharacterController Controller { get; private set; }
         public SackScript Sack { get; private set; }
-        
-        public void Start()
+        public TorchScript Torch { get; private set; }
+
+        private void Awake()
         {
             Instance = this;
-            
+        }
+
+        public void Start()
+        {
             Controller = GetComponent<TopDownCharacterController>();
             Sack = FindAnyObjectByType<SackScript>();
-            
+            Torch = FindAnyObjectByType<TorchScript>();
+
             UpdateInteractables();
             InvokeRepeating(nameof(UpdateInteractables), 1f, 1f);
         }
@@ -38,13 +44,13 @@ namespace Gameplay
         public void UpdateInteractables()
         {
             interactableObjects.Clear();
-            
+
             foreach (var interactable in FindObjectsOfType<InteractableObject>())
             {
                 interactableObjects.Add(interactable);
             }
         }
-        
+
         public void Update()
         {
             InteractableObject closestInteractable = null;
@@ -54,15 +60,17 @@ namespace Gameplay
             {
                 if (!interactableObject)
                     continue;
-                
+
                 Vector3 position = interactableObject.transform.position;
                 float distance = Vector3.Distance(position, transform.position);
-                
+
+//                Debug.Log("distance to interactable " + interactableObject.name + ": " + distance);
+
                 float dotProduct = Vector3.Dot(transform.forward, (position - transform.position).normalized);
                 if (dotProduct < 0.25f)
                     continue;
-                
-                if (distance < closestDistance || dotProduct > (closestDotProduct + 0.2f))
+
+                if (distance < closestDistance || (distance < interactRange && dotProduct > (closestDotProduct + 0.2f)))
                 {
                     closestDistance = distance;
                     closestDotProduct = dotProduct;
@@ -70,8 +78,8 @@ namespace Gameplay
                     CurrentInteractButton = closestInteractable.InteractButton;
                 }
             }
-            
-            if (closestInteractable != null && !carryingSack)
+
+            if (closestInteractable != null && (!carryingSack || !carryingTorch))
             {
                 IsInRangeOfInteractable = true;
             }
@@ -85,14 +93,26 @@ namespace Gameplay
             {
                 if (Input.GetButtonDown(closestInteractable.InteractButton.ToString()))
                 {
+                    Debug.Log("Interacting with: " + closestInteractable.name + " at range of " + closestDistance);
                     closestInteractable.Interact();
                 }
             }
-            else if (carryingSack)
+            else
             {
-                if (Input.GetButtonDown(InteractButton.Pickup.ToString()))
+                if (carryingSack)
                 {
-                    Sack.DetachFromPlayer();
+                    if (Input.GetButtonDown(InteractButton.Pickup.ToString()))
+                    {
+                        Sack.DetachFromPlayer();
+                    }
+                }
+
+                if (carryingTorch)
+                {
+                    if (Input.GetButtonDown(InteractButton.Throw.ToString()))
+                    {
+                        Torch.Throw();
+                    }
                 }
             }
         }
