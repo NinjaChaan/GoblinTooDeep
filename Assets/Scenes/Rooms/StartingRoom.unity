@@ -419,6 +419,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OreRock
       objectReference: {fileID: 0}
+    - target: {fileID: 7393673586291128855, guid: 440f749584237f44ab2afa55e049535b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8614037319136840784, guid: 440f749584237f44ab2afa55e049535b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
