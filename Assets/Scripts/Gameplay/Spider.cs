@@ -7,11 +7,13 @@ public class Spider : MonoBehaviour
 {
     private GameObject targetGem;
     public float speed = 0.1f;
+    public float speedWithGem = 0.1f;
 
     private Rigidbody rb;
     public Transform gemHoldPoint;
-    
+
     private bool isHoldingGem = false;
+    public Transform spiderHole; // Reference to the spider hole where the gem will be dropped
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,21 +33,28 @@ public class Spider : MonoBehaviour
             rb.MovePosition(transform.position + direction * (speed * Time.deltaTime));
             // Rotate towards the target gem
             Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
         }
-        // if (isHoldingGem)
-        // {
-        //     // If holding a gem, move it to the hold point
-        //     targetGem.transform.position = gemHoldPoint.position;
-        // }
+
+        if (isHoldingGem)
+        {
+            //Move towards spiderhole
+            Vector3 direction = (spiderHole.position - transform.position).normalized;
+            rb.MovePosition(transform.position + direction * (speedWithGem * Time.deltaTime));
+            // Rotate towards the spider hole
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+        }
     }
 
     private void OnCollisionEnter(Collision other)
     {
-        if(other.transform.CompareTag("Gem"))
+        if (other.transform.CompareTag("Gem"))
         {
             isHoldingGem = true;
             targetGem.transform.parent = transform;
-            targetGem.GetComponent<Rigidbody>().isKinematic = true; // Make the gem kinematic to stop physics interactions
+            targetGem.GetComponent<Rigidbody>().isKinematic =
+                true; // Make the gem kinematic to stop physics interactions
             targetGem.GetComponent<Collider>().enabled = false; // Disable collider for the gem
             targetGem.transform.position = gemHoldPoint.position;
         }
@@ -64,6 +73,17 @@ public class Spider : MonoBehaviour
                 {
                     targetGem = gems[Random.Range(0, gems.Length)];
                 }
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("SpiderHole"))
+        {
+            if (isHoldingGem)
+            {
+                Destroy(gameObject); // Destroy the spider when it reaches the hole}
             }
         }
     }
