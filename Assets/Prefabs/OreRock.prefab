@@ -119,7 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mineablePart: {fileID: 14757822959312070}
   gemPrefab: {fileID: 7776681082335304173, guid: e2f77e0a074fd9342ae756222cd9c565, type: 3}
-  sparkVfx: {fileID: 5418817702639699371, guid: 8c9f0d86163620e4fa437cac22b0a725, type: 3}
+  sparkVfx: {fileID: 4935901137528073476, guid: 49f47d5e71f5a3748834e27b8270b165, type: 3}
   rubbleVfx: {fileID: 1213675118531609950, guid: 9e56d641df1c3734cae5c1db1dfad373, type: 3}
   rubbleSmolVfx: {fileID: 1213675118531609950, guid: 2428a5a1310fa3c4ebc28eec4199c001, type: 3}
   gemCount: 5
