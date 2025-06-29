@@ -14,6 +14,7 @@ public class TopDownCharacterController : MonoBehaviour
     
     private Rigidbody rb;
     private Vector2 moveInput;
+    private Animator animator;
 
     [SerializeField]
     public ControllingType currentControlType = ControllingType.Keyboard;
@@ -24,6 +25,7 @@ public class TopDownCharacterController : MonoBehaviour
     
     private void Awake()
     {
+        animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
     }
     
@@ -54,6 +56,15 @@ public class TopDownCharacterController : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         
         moveInput = Vector2.ClampMagnitude(new Vector2(horizontalInput, verticalInput), 1);
+
+        if (moveInput.magnitude > 0.1f)
+        {
+            animator?.SetBool("Walking", true);
+        }
+        else
+        {
+            animator?.SetBool("Walking", false);
+        }
     }
     
     private bool CheckForKeyboardInput()
