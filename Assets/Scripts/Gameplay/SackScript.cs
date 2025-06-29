@@ -11,10 +11,13 @@ public class SackScript : InteractableObject
     
     public AudioSource audioSource;
     public AudioClip pickupSound;
+    
+    private GemAmountScript gemAmountScript;
         
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        gemAmountScript = FindFirstObjectByType<GemAmountScript>();
         AttachToPlayer();
     }
 
@@ -31,6 +34,7 @@ public class SackScript : InteractableObject
     {
         gems++;
         audioSource.PlayOneShot(pickupSound);
+        gemAmountScript.UpdateGemAmount(gems);
     }
 
     public void AttachToPlayer()
