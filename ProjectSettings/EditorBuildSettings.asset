@@ -17,6 +17,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Rooms/StartingRoom.unity
     guid: c1ebfb25c27400b4d8fb9f330a2a4b99
+  - enabled: 1
+    path: Assets/Scenes/Rooms/Rectangular/Rect1.unity
+    guid: 65485ec94d1945444bbe7710680f326d
+  - enabled: 1
+    path: Assets/Scenes/Rooms/Rectangular/Rect2.unity
+    guid: 4b4c83a906ae1f341b94fedab0c93c70
+  - enabled: 1
+    path: Assets/Scenes/Rooms/Shop.unity
+    guid: a01084ad82e32274dbe8cd7bc321ad50
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

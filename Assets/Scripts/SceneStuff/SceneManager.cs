@@ -76,6 +76,9 @@ public class SceneManager : MonoBehaviour
         }
         
         yield return UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneDescriptor.Scene, LoadSceneMode.Additive);
+        UnityEngine.SceneManagement.SceneManager.SetActiveScene(
+            UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneDescriptor.Scene));
+
         _currentScene = sceneDescriptor;
         
         _isLoadingScene = false;

@@ -223,9 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831a26a01bcb4544a92c7806571f4485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NormalScenes: []
-  ShopScene: {fileID: 0}
-  ShopFrequency: 4
+  ShopFrequency: 2
   CurrentLevel: 0
 --- !u!4 &1083017257
 Transform:
@@ -358,9 +356,9 @@ Light:
   serializedVersion: 11
   m_Type: 0
   m_Color: {r: 0.89757407, g: 0.7473882, b: 0.6326566, a: 1}
-  m_Intensity: 12
+  m_Intensity: 20
   m_Range: 50
-  m_SpotAngle: 76.70428
+  m_SpotAngle: 87.67749
   m_InnerSpotAngle: 21.406292
   m_CookieSize: 10
   m_Shadows:
