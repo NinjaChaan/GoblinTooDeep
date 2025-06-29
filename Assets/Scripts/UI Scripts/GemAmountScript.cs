@@ -1,3 +1,4 @@
+using Gameplay;
 using UnityEngine;
 
 public class GemAmountScript : MonoBehaviour
@@ -12,7 +13,7 @@ public class GemAmountScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateGemAmount(PlayerScript.Instance.Sack.gems);
     }
     
     public void UpdateGemAmount(int amount)

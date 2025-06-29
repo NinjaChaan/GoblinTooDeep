@@ -122,10 +122,10 @@ MonoBehaviour:
   sparkVfx: {fileID: 4935901137528073476, guid: 49f47d5e71f5a3748834e27b8270b165, type: 3}
   rubbleVfx: {fileID: 1213675118531609950, guid: 9e56d641df1c3734cae5c1db1dfad373, type: 3}
   rubbleSmolVfx: {fileID: 1213675118531609950, guid: 2428a5a1310fa3c4ebc28eec4199c001, type: 3}
-  gemCount: 5
-  hitpoints: 7
-  gemChancePerHit: 0.3
-  explosionForceMinMax: {x: 2, y: 7}
+  gemCount: 3
+  hitpoints: 8
+  gemChancePerHit: 0.35
+  explosionForceMinMax: {x: 3, y: 9}
   gemMaterials:
   - {fileID: 2100000, guid: 3907ac669123bc14c9e209b68658aaa2, type: 2}
   - {fileID: 2100000, guid: 95ef1f2bc81a81c41bbfcf12e0b79610, type: 2}

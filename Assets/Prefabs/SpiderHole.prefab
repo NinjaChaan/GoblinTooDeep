@@ -48,8 +48,8 @@ MonoBehaviour:
   spiderPrefab: {fileID: 5455215205452543450, guid: 5a81af07cb35fb1419dec9800caa9126, type: 3}
   initialSpawnDelayMin: 1
   initialSpawnDelayMax: 10
-  minSpawningDelay: 30
-  maxSpawningDelay: 60
+  minSpawningDelay: 15
+  maxSpawningDelay: 45
   maxSpidersSpawned: 10
 --- !u!1 &1513510660587001283
 GameObject:
