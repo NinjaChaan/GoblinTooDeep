@@ -4995,6 +4995,8 @@ MonoBehaviour:
   flickerIntensityMin: 9.5
   flickerIntensityMax: 10
   lightPivotPoint: {fileID: 5505926864499291269}
+  torchStrength: 1
+  torchParticles: {fileID: 2936178525670315046}
 --- !u!54 &6279967305252965308
 Rigidbody:
   m_ObjectHideFlags: 0

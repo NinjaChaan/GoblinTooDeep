@@ -11,18 +11,43 @@ public class TorchLightFlicker : MonoBehaviour
     public float flickerIntensityMax = 5.1f;
     public Transform lightPivotPoint;
 
+    public float torchStrength = 1f;
+    public ParticleSystem torchParticles;
+    private float particlesSize;
+    private float particlesRate;
+    private float range;
+    private float intensityMin;
+    private float intensityMax;
+
     void Start()
     {
         var lightgo = Instantiate(torchObject);
         lightTransform = lightgo.transform;
         torchLight = lightgo.GetComponent<Light>();
         StartCoroutine(Flicker());
+        particlesSize = torchParticles.main.startSize.constant;
+        particlesRate = torchParticles.emission.rateOverTime.constant;
+        range = torchLight.range;
+        intensityMin = flickerIntensityMin;
+        intensityMax = flickerIntensityMax;
     }
 
     
     void Update()
     {
         lightTransform.position = lightPivotPoint.position + Vector3.up * 2;
+    }
+    
+    public void SetTorchStrength(float strength)
+    {
+        torchStrength = strength;
+        var main = torchParticles.main;
+        var emission = torchParticles.emission;
+        torchLight.range = Mathf.Max(range * strength, range * 0.5f);
+        flickerIntensityMin = Mathf.Max(intensityMin * strength, intensityMin * 0.5f);
+        flickerIntensityMax = Mathf.Max(intensityMax * strength, intensityMax * 0.5f);
+        main.startSize = Mathf.Max(particlesSize * strength, particlesSize * 0.5f);
+        emission.rateOverTime = Mathf.Max(particlesRate * strength, particlesRate * 0.5f);
     }
 
     // Method to handle the flickering effect
