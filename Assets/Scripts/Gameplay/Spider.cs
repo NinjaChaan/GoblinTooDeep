@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Gameplay;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -14,14 +16,16 @@ public class Spider : MonoBehaviour
         CarryingGem,
         FleeingTorch
     }
-    
-    private GemScript targetGem;
+
+    private Transform targetGem;
     public float speed = 0.1f;
     public float speedWithGem = 0.1f;
     public float fleeSpeed = 4f;
     public float wanderDistance = 3f;
     public float gemPickupRange = 0.5f;
+
     public float fleeDistance = 20f;
+
     // private Rigidbody rb;
     public Transform gemHoldPoint;
 
@@ -38,25 +42,27 @@ public class Spider : MonoBehaviour
     private NavMeshAgent navMeshAgent; // Reference to the NavMeshAgent component for pathfinding
     private NavMeshPath path;
     private Animator animator;
-    
+
     public SpiderState CurrentState = SpiderState.Idle;
 
 
     private float idleTimer = 0f;
     private float fleeTimer = 5f;
-    
+
+    public GameObject gemPrefab; // Reference to the gem prefab for spawning
+
     void Start()
     {
         var holes = FindObjectsByType<SpiderHole>(FindObjectsSortMode.None);
-        
+
         spiderHole = holes[Random.Range(0, holes.Length)].transform; // Find hole
-        
+
         // rb = GetComponent<Rigidbody>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
         // Start checking for torches
         StartCoroutine(CheckForTorches());
-        
+
         CurrentState = SpiderState.Idle;
     }
 
@@ -70,16 +76,17 @@ public class Spider : MonoBehaviour
                 Debug.LogError("No NavMesh found!");
                 return;
             }
+
             navMeshAgent.Warp(hit.position);
         }
-        
+
         if (torches.Length > 0 && CurrentState != SpiderState.FleeingTorch)
         {
             foreach (var torch in torches)
             {
                 if (Vector3.Distance(torch.transform.position, transform.position) < torchEscapeDistance)
                 {
-                    StartFlee(torch.transform);
+                    StartFlee(torch?.transform);
                     break;
                 }
             }
@@ -92,7 +99,8 @@ public class Spider : MonoBehaviour
         else if (isHoldingGem)
         {
             navMeshAgent.speed = speedWithGem;
-        } else
+        }
+        else
         {
             navMeshAgent.speed = speed;
         }
@@ -112,13 +120,16 @@ public class Spider : MonoBehaviour
         if (CurrentState == SpiderState.Idle)
         {
             Idle();
-        }else if (CurrentState == SpiderState.ChasingGem)
+        }
+        else if (CurrentState == SpiderState.ChasingGem)
         {
             ChasingGem();
-        } else if (CurrentState == SpiderState.CarryingGem)
+        }
+        else if (CurrentState == SpiderState.CarryingGem)
         {
             CarryingGem();
-        } else if (CurrentState == SpiderState.FleeingTorch)
+        }
+        else if (CurrentState == SpiderState.FleeingTorch)
         {
             FleeingTorch();
         }
@@ -137,7 +148,7 @@ public class Spider : MonoBehaviour
             CurrentState = SpiderState.CarryingGem;
             return;
         }
-        
+
         if (Random.Range(0, 1f) < 0.1f)
         {
             FindTargetGem();
@@ -157,24 +168,36 @@ public class Spider : MonoBehaviour
             return;
         }
 
-        if (targetGem.isCarried)
+        if (targetGem.GetComponent<GemScript>()?.isCarried ?? false)
         {
             CurrentState = SpiderState.Idle;
             targetGem = null;
             return;
         }
+
         if (HasPathEnded())
         {
             navMeshAgent.destination = targetGem.transform.position;
-            Debug.Log($"Chasing Gem ended Distance: {Vector3.Distance(transform.position, targetGem.transform.position)}, Range: {gemPickupRange}");
+            Debug.Log(
+                $"Chasing Gem ended Distance: {Vector3.Distance(transform.position, targetGem.transform.position)}, Range: {gemPickupRange}");
         }
 
         if (Vector3.Distance(transform.position, targetGem.transform.position) < gemPickupRange)
         {
-            GrabGem(targetGem);
+            if (targetGem.TryGetComponent<SackScript>(out SackScript sack))
+            {
+                Debug.Log("Stealing from sack");
+                sack.RemoveGem();
+                var gem = Instantiate(gemPrefab);
+                GrabGem(gem.GetComponent<GemScript>());
+            }
+            else
+            {
+                GrabGem(targetGem.GetComponent<GemScript>());
+            }
         }
     }
-    
+
     private void CarryingGem()
     {
         if (!holdingGem || !isHoldingGem)
@@ -182,17 +205,18 @@ public class Spider : MonoBehaviour
             CurrentState = SpiderState.Idle;
             return;
         }
+
         if (HasPathEnded())
         {
             navMeshAgent.destination = spiderHole.position;
         }
-        
+
         if (Vector3.Distance(transform.position, spiderHole.position) < gemPickupRange)
         {
             Destroy(gameObject);
         }
     }
-    
+
     private void FleeingTorch()
     {
         if (HasPathEnded())
@@ -216,9 +240,9 @@ public class Spider : MonoBehaviour
                 break;
             distance -= 1f;
         }
-        
+
         CurrentState = SpiderState.FleeingTorch;
-        
+
         // Rotate away from the torch
         // Quaternion lookRotation = Quaternion.LookRotation(fleeDirection);
         // transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
@@ -237,11 +261,13 @@ public class Spider : MonoBehaviour
             Debug.Log("Already Carrying");
             return;
         }
+
         if (isHoldingGem)
         {
             Debug.Log("Already Holding");
             return; // If already holding a gem, do nothing
         }
+
         isHoldingGem = true;
         targetGem.transform.parent = gemHoldPoint;
         targetGem.GetComponent<Rigidbody>().isKinematic = true;
@@ -260,14 +286,14 @@ public class Spider : MonoBehaviour
         holdingGem.GetComponent<Rigidbody>().isKinematic = false;
         holdingGem.GetComponent<Collider>().enabled = true;
         holdingGem.isCarried = false;
-        
+
         isHoldingGem = false;
         holdingGem = null;
     }
 
     private Vector3 GetRandomNearTargetPosition()
     {
-        Vector2 dir = Random.insideUnitCircle* wanderDistance;
+        Vector2 dir = Random.insideUnitCircle * wanderDistance;
         Vector3 randomPos = transform.position + new Vector3(dir.x, 0, dir.y);
         return randomPos;
     }
@@ -291,11 +317,18 @@ public class Spider : MonoBehaviour
     {
         if (!targetGem)
         {
-            GameObject[] gems = GameObject.FindGameObjectsWithTag("Gem");
-            gems = gems.Where(g => !g.GetComponent<GemScript>().isCarried).ToArray();
-            if (gems.Length > 0)
+            List<GameObject> gems = GameObject.FindGameObjectsWithTag("Gem").ToList();
+
+            gems = gems.Where(g => !g.GetComponent<GemScript>().isCarried).ToList();
+            SackScript sackScript = FindObjectOfType<SackScript>();
+            if (!PlayerScript.Instance.carryingSack && sackScript.gems > 0)
             {
-                targetGem = gems[Random.Range(0, gems.Length)].GetComponent<GemScript>();
+                gems.Add(sackScript.gameObject);
+                Debug.Log("Found Sack with Gems");
+            }
+            if (gems.Count > 0)
+            {
+                targetGem = gems[Random.Range(0, gems.Count)].transform;
                 CurrentState = SpiderState.ChasingGem;
             }
         }

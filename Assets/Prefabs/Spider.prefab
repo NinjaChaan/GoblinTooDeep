@@ -760,13 +760,14 @@ MonoBehaviour:
   speedWithGem: 1.45
   fleeSpeed: 4
   wanderDistance: 5
-  gemPickupRange: 0.5
+  gemPickupRange: 1
   fleeDistance: 10
   gemHoldPoint: {fileID: 5882136115335469719}
   holdingGem: {fileID: 0}
   spiderHole: {fileID: 0}
   torchEscapeDistance: 3
   CurrentState: 0
+  gemPrefab: {fileID: 7776681082335304173, guid: e2f77e0a074fd9342ae756222cd9c565, type: 3}
 --- !u!195 &436773244851066273
 NavMeshAgent:
   m_ObjectHideFlags: 0

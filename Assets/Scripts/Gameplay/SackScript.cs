@@ -36,6 +36,15 @@ public class SackScript : InteractableObject
         audioSource.PlayOneShot(pickupSound);
         gemAmountScript.UpdateGemAmount(gems);
     }
+    
+    public void RemoveGem()
+    {
+        if (gems > 0)
+        {
+            gems--;
+            gemAmountScript.UpdateGemAmount(gems);
+        }
+    }
 
     public void AttachToPlayer()
     {
