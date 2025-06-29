@@ -32,6 +32,8 @@ namespace Gameplay
 
         public bool PickSelected = false;
 
+        
+        private Animator animator;
         private void Awake()
         {
             Instance = this;
@@ -39,6 +41,7 @@ namespace Gameplay
 
         public void Start()
         {
+            animator = GetComponentInChildren<Animator>();
             Controller = GetComponent<TopDownCharacterController>();
             Sack = FindAnyObjectByType<SackScript>();
             Torch = FindAnyObjectByType<TorchScript>();
@@ -128,6 +131,7 @@ namespace Gameplay
                 {
                     Debug.Log("Interacting with: " + closestInteractable.name + " at range of " + closestDistance);
                     closestInteractable.Interact();
+                    animator.SetTrigger("Pick");
                 }
             }
             else
