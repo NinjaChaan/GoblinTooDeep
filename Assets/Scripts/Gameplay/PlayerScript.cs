@@ -160,6 +160,7 @@ namespace Gameplay
             }
 
             TorchTimeLeft -= Time.deltaTime;
+            Torch.GetComponent<TorchLightFlicker>().SetTorchStrength(TorchTimeLeft / InitialTorchTime);
             if (TorchTimeLeft <= 0f)
             {
                 SceneManager.LoadScene(SceneManager.Instance.MainMenuScene);
