@@ -8,8 +8,8 @@ using Random = UnityEngine.Random;
 
 public class GameProgressManager : MonoBehaviour
 {
-    public List<SceneDescriptor> NormalScenes;
-    public SceneDescriptor ShopScene;
+    private List<SceneDescriptor> NormalScenes;
+    private SceneDescriptor ShopScene;
     public int ShopFrequency = 4;
     public int CurrentLevel;
     public static GameProgressManager Instance { get; set; }
@@ -26,6 +26,9 @@ public class GameProgressManager : MonoBehaviour
     void Start()
     {
         CurrentLevel = 0;
+
+        NormalScenes = SceneManager.Instance.RegularRooms;
+        ShopScene = SceneManager.Instance.ShopRooms[0];
     }
 
     public SceneDescriptor GetNextScene()

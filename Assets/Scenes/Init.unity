@@ -34,7 +34,7 @@ RenderSettings:
   m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
   m_DefaultReflectionMode: 0
   m_DefaultReflectionResolution: 128
-  m_ReflectionBounces: 1
+  m_ReflectionBounces: 2
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
@@ -93,7 +93,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 5eaa65f69b90f334da29a76a1977c578, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -166,8 +166,11 @@ MonoBehaviour:
   MainMenuScene: {fileID: 11400000, guid: 5dc8dc3c8f459df4fab3eff037a461ee, type: 2}
   GameplayEssentialsScene: GameplayEssentials
   FirstRoom: {fileID: 11400000, guid: 170c6954dcae1ee4ab2199aca3977c91, type: 2}
-  RegularRooms: []
-  ShopRooms: []
+  RegularRooms:
+  - {fileID: 11400000, guid: 0741a2746ea440946a05ac0163d0072b, type: 2}
+  - {fileID: 11400000, guid: ca083a20ade430d4db95821a07a765f5, type: 2}
+  ShopRooms:
+  - {fileID: 11400000, guid: 97b50896bffbd874eb32652414de2e50, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
