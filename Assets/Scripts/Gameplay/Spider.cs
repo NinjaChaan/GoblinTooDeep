@@ -37,6 +37,7 @@ public class Spider : MonoBehaviour
 
     private NavMeshAgent navMeshAgent; // Reference to the NavMeshAgent component for pathfinding
     private NavMeshPath path;
+    private Animator animator;
     
     public SpiderState CurrentState = SpiderState.Idle;
 
@@ -52,6 +53,7 @@ public class Spider : MonoBehaviour
         
         // rb = GetComponent<Rigidbody>();
         navMeshAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
         // Start checking for torches
         StartCoroutine(CheckForTorches());
         
@@ -93,6 +95,18 @@ public class Spider : MonoBehaviour
         } else
         {
             navMeshAgent.speed = speed;
+        }
+
+        if (animator != null)
+        {
+            if (HasPathEnded())
+            {
+                animator.SetBool("Moving", false);
+            }
+            else
+            {
+                animator.SetBool("Moving", true);
+            }
         }
 
         if (CurrentState == SpiderState.Idle)
