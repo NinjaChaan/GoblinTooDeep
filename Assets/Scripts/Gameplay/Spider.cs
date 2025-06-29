@@ -269,10 +269,10 @@ public class Spider : MonoBehaviour
         }
 
         isHoldingGem = true;
-        targetGem.transform.parent = gemHoldPoint;
-        targetGem.GetComponent<Rigidbody>().isKinematic = true;
-        targetGem.GetComponent<Collider>().enabled = false;
-        targetGem.transform.position = gemHoldPoint.position;
+        gem.transform.parent = gemHoldPoint;
+        gem.GetComponent<Rigidbody>().isKinematic = true;
+        gem.GetComponent<Collider>().enabled = false;
+        gem.transform.position = gemHoldPoint.position;
         holdingGem = gem;
         gem.isCarried = true;
 
