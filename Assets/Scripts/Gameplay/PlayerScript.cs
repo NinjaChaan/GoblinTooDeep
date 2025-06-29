@@ -34,6 +34,10 @@ namespace Gameplay
 
         
         private Animator animator;
+
+        public float InitialTorchTime = 60 * 5;
+        public float TorchTimeLeft = 0f;
+        
         private void Awake()
         {
             Instance = this;
@@ -48,6 +52,8 @@ namespace Gameplay
 
             UpdateInteractables();
             InvokeRepeating(nameof(UpdateInteractables), 1f, 1f);
+
+            TorchTimeLeft = InitialTorchTime;
         }
 
         public void UpdateInteractables()
@@ -151,6 +157,12 @@ namespace Gameplay
                         Torch.Throw();
                     }
                 }
+            }
+
+            TorchTimeLeft -= Time.deltaTime;
+            if (TorchTimeLeft <= 0f)
+            {
+                SceneManager.LoadScene(SceneManager.Instance.MainMenuScene);
             }
         }
     }
