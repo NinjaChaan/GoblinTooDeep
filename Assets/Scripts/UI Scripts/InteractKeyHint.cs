@@ -24,7 +24,9 @@ namespace UI_Scripts
 
                 if (PlayerScript.Instance.IsInRangeButSack)
                 {
-                    image.sprite = dropSackHint;
+                    image.sprite = PlayerScript.Instance.Controller.CurrentControlType == ControllingType.Keyboard
+                        ? keyboardPickupButtonHint
+                        : gamepadPickupButtonHint;
                 }
                 else
                 {

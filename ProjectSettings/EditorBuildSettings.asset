@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Rooms/Shop.unity
     guid: a01084ad82e32274dbe8cd7bc321ad50
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: a46f3c8c4cd9971459de26b2bfd9cde2
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

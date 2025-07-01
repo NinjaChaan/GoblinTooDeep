@@ -149,14 +149,14 @@ public class Spider : MonoBehaviour
             return;
         }
 
-        if (Random.Range(0, 1f) < 0.1f)
+        if (Random.Range(0, 1f) < 0.5f)
         {
             FindTargetGem();
         }
         else
         {
             navMeshAgent.destination = GetRandomNearTargetPosition();
-            idleTimer = Random.Range(1f, 10f);
+            idleTimer = Random.Range(1f, 5f);
         }
     }
 
@@ -178,15 +178,15 @@ public class Spider : MonoBehaviour
         if (HasPathEnded())
         {
             navMeshAgent.destination = targetGem.transform.position;
-            Debug.Log(
-                $"Chasing Gem ended Distance: {Vector3.Distance(transform.position, targetGem.transform.position)}, Range: {gemPickupRange}");
+            // Debug.Log(
+            //     $"Chasing Gem ended Distance: {Vector3.Distance(transform.position, targetGem.transform.position)}, Range: {gemPickupRange}");
         }
 
         if (Vector3.Distance(transform.position, targetGem.transform.position) < gemPickupRange)
         {
             if (targetGem.TryGetComponent<SackScript>(out SackScript sack))
             {
-                Debug.Log("Stealing from sack");
+                // Debug.Log("Stealing from sack");
                 sack.RemoveGem();
                 var gem = Instantiate(gemPrefab);
                 GrabGem(gem.GetComponent<GemScript>());
@@ -221,7 +221,7 @@ public class Spider : MonoBehaviour
     {
         if (HasPathEnded())
         {
-            Debug.Log("FleeingTorch ended");
+            // Debug.Log("FleeingTorch ended");
             CurrentState = SpiderState.Idle;
             idleTimer = 5f;
         }
@@ -229,7 +229,7 @@ public class Spider : MonoBehaviour
 
     private void StartFlee(Transform torch)
     {
-        Debug.Log("Fleeeee");
+        // Debug.Log("Fleeeee");
         Vector3 fleeDirection = Vector3.Scale((transform.position - torch.position), new Vector3(1, 0, 1)).normalized;
 
         float distance = fleeDistance;
@@ -255,16 +255,16 @@ public class Spider : MonoBehaviour
 
     private void GrabGem(GemScript gem)
     {
-        Debug.Log("Grabbing Gem");
+        // Debug.Log("Grabbing Gem");
         if (gem.isCarried)
         {
-            Debug.Log("Already Carrying");
+            // Debug.Log("Already Carrying");
             return;
         }
 
         if (isHoldingGem)
         {
-            Debug.Log("Already Holding");
+            // Debug.Log("Already Holding");
             return; // If already holding a gem, do nothing
         }
 
@@ -277,7 +277,7 @@ public class Spider : MonoBehaviour
         gem.isCarried = true;
 
         CurrentState = SpiderState.CarryingGem;
-        Debug.Log("Now carrying.");
+        // Debug.Log("Now carrying.");
     }
 
     private void DropGem()
@@ -324,7 +324,7 @@ public class Spider : MonoBehaviour
             if (!PlayerScript.Instance.carryingSack && sackScript.gems > 0)
             {
                 gems.Add(sackScript.gameObject);
-                Debug.Log("Found Sack with Gems");
+                // Debug.Log("Found Sack with Gems");
             }
             if (gems.Count > 0)
             {

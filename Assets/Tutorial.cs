@@ -1,6 +1,6 @@
-using System;
 using UnityEngine;
-public class MainMenuScript : MonoBehaviour
+
+public class Tutorial : MonoBehaviour
 {
     string[] joystickButtons = {
         "joystick button 0", "joystick button 1", "joystick button 2",
@@ -21,21 +21,20 @@ public class MainMenuScript : MonoBehaviour
         }
         return false;
     }
-    private void Update()
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+
+    void Update()
     {
         if (Input.anyKeyDown || AnyJoystickButtonDown())
         {
-            Play();
+            Debug.Log("Input detected, loading first room.");
+            SceneManager.LoadScene(SceneManager.Instance.FirstRoom);
         }
     }
 
-    public void Play()
-    {
-        SceneManager.LoadScene(SceneManager.Instance.TutorialScene);
-    }
-
-    public void Quit()
-    {
-        Application.Quit();
-    }
 }

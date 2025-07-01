@@ -14,6 +14,7 @@ public class SceneManager : MonoBehaviour
     public string GameplayEssentialsScene;
     
     public SceneDescriptor FirstRoom;
+    public SceneDescriptor TutorialScene;
     public List<SceneDescriptor> RegularRooms;
     public List<SceneDescriptor> ShopRooms;
 

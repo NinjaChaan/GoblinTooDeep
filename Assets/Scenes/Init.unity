@@ -166,6 +166,7 @@ MonoBehaviour:
   MainMenuScene: {fileID: 11400000, guid: 5dc8dc3c8f459df4fab3eff037a461ee, type: 2}
   GameplayEssentialsScene: GameplayEssentials
   FirstRoom: {fileID: 11400000, guid: 170c6954dcae1ee4ab2199aca3977c91, type: 2}
+  TutorialScene: {fileID: 11400000, guid: 1b81dca8bdbc68b41bd557faf410a1f1, type: 2}
   RegularRooms:
   - {fileID: 11400000, guid: 0741a2746ea440946a05ac0163d0072b, type: 2}
   - {fileID: 11400000, guid: ca083a20ade430d4db95821a07a765f5, type: 2}

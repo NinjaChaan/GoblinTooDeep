@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.InputSystem;
+
 namespace Gameplay
 {
     public class PlayerScript : MonoBehaviour
@@ -38,10 +40,15 @@ namespace Gameplay
         public float InitialTorchTime = 60 * 5;
         public float TorchTimeLeft = 0f;
         
+        private Controls controls;
+        
         private void Awake()
         {
             Instance = this;
+            controls = new Controls();
         }
+        void OnEnable() => controls.Player.Enable();
+        void OnDisable() => controls.Player.Disable();
 
         public void Start()
         {
@@ -68,7 +75,9 @@ namespace Gameplay
 
         public void Update()
         {
-            if (Input.GetButtonDown(InteractButton.SwitchTool.ToString()))
+            var gamepad = Gamepad.current;
+            if (gamepad == null) return;
+            if (controls.Player.SwitchTool.triggered)
             {
                 if (PickSelected)
                 {
@@ -133,9 +142,32 @@ namespace Gameplay
 
             if (IsInRangeOfInteractable)
             {
-                if (Input.GetButtonDown(closestInteractable.InteractButton.ToString()))
+                bool interacted = false;
+                switch (closestInteractable.InteractButton.ToString())
                 {
-                    Debug.Log("Interacting with: " + closestInteractable.name + " at range of " + closestDistance);
+                    case "Mine":
+                        if(controls.Player.Mine.triggered)
+                        {
+                            interacted = true;
+                        }
+                        break;
+                    case "Pickup":
+                        if(controls.Player.Interact.triggered)
+                        {
+                            interacted = true;
+                        }
+                        break;
+                    case "Torch":
+                        if(controls.Player.DropTorch.triggered)
+                        {
+                            interacted = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                if (interacted)
+                {
                     closestInteractable.Interact();
                     animator.SetTrigger("Pick");
                 }
@@ -144,7 +176,7 @@ namespace Gameplay
             {
                 if (carryingSack)
                 {
-                    if (Input.GetButtonDown(InteractButton.Pickup.ToString()))
+                    if (controls.Player.Interact.triggered)
                     {
                         Sack.DetachFromPlayer();
                     }
@@ -152,7 +184,7 @@ namespace Gameplay
 
                 if (carryingTorch && !PickSelected)
                 {
-                    if (Input.GetButtonDown(InteractButton.Throw.ToString()))
+                    if (controls.Player.DropTorch.triggered)
                     {
                         Torch.Throw();
                     }
