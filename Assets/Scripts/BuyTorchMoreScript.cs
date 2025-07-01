@@ -5,6 +5,8 @@ using UnityEngine;
 public class BuyTorchMoreScript : InteractableObject
 {
     public static bool IsPlayerInRange = false;
+
+    public int torchCost = 30;
     
     
     public void Update()
@@ -20,14 +22,14 @@ public class BuyTorchMoreScript : InteractableObject
         }
     }
 
-    public override bool IsInteractable => PlayerScript.Instance.Sack.gems >= 20;
+    public override bool IsInteractable => PlayerScript.Instance.Sack.gems >= torchCost;
     public override InteractButton InteractButton => InteractButton.Pickup;
     
     public override void Interact()
     {
-        if (PlayerScript.Instance.Sack.gems >= 20)
+        if (PlayerScript.Instance.Sack.gems >= torchCost)
         {
-            PlayerScript.Instance.Sack.gems -= 20;
+            PlayerScript.Instance.Sack.gems -= torchCost;
             PlayerScript.Instance.TorchTimeLeft = PlayerScript.Instance.InitialTorchTime;
         }
     }

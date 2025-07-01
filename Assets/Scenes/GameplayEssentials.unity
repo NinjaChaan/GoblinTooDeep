@@ -402,7 +402,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Buy More Torch Time \n( 20 HRT )
+  m_text: Buy More Torch Time \n( 0 HRT )
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 89cd841dc1d821845b493ada3ac49823, type: 2}
   m_sharedMaterial: {fileID: 4257183129591804370, guid: 89cd841dc1d821845b493ada3ac49823, type: 2}

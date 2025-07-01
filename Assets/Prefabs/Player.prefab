@@ -132,7 +132,7 @@ MonoBehaviour:
   carryingPick: 1
   PickAxe: {fileID: 8995710516848093422}
   PickSelected: 0
-  InitialTorchTime: 240
+  InitialTorchTime: 300
   TorchTimeLeft: 0
 --- !u!1 &1104268494840806557
 GameObject:

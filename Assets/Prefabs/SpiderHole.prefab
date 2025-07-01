@@ -47,10 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spiderPrefab: {fileID: 5455215205452543450, guid: 5a81af07cb35fb1419dec9800caa9126, type: 3}
   initialSpawnDelayMin: 1
-  initialSpawnDelayMax: 10
-  minSpawningDelay: 5
-  maxSpawningDelay: 15
-  maxSpidersSpawned: 10
+  initialSpawnDelayMax: 5
+  minSpawningDelay: 10
+  maxSpawningDelay: 20
+  maxSpidersSpawned: 15
 --- !u!1 &1513510660587001283
 GameObject:
   m_ObjectHideFlags: 0

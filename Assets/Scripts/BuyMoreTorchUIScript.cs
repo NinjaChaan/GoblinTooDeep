@@ -16,6 +16,7 @@ public class BuyMoreTorchUIScript : MonoBehaviour
         if (BuyTorchMoreScript.IsPlayerInRange)
         {
             text.enabled = true;
+            text.text = $"Buy More Torch Time \\n( {FindAnyObjectByType<BuyTorchMoreScript>().torchCost} HRT )";
         }
         else
         {
