@@ -334,6 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e837e9cabbe21b149b7293fd1c59bfe9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  torchCost: 20
 --- !u!1001 &909167568
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -522,7 +522,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 831a26a01bcb4544a92c7806571f4485, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShopFrequency: 3
+  ShopFrequency: 2
   CurrentLevel: 0
 --- !u!4 &1083017257
 Transform:

@@ -248,6 +248,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1851516204371822569, guid: 119b1105c09eae24f85c5c166e7af767, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851516204371822569, guid: 119b1105c09eae24f85c5c166e7af767, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 1851516204371822569, guid: 119b1105c09eae24f85c5c166e7af767, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 5429232243708736393, guid: 119b1105c09eae24f85c5c166e7af767, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -343,6 +355,12 @@ PrefabInstance:
     - target: {fileID: 5675254614908350142, guid: 119b1105c09eae24f85c5c166e7af767, type: 3}
       propertyPath: m_Color.r
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7445520751206269891, guid: 119b1105c09eae24f85c5c166e7af767, type: 3}
+      propertyPath: m_text
+      value: "Controls: \r\n\r\nMove = WASD / Left stick\r\nInteract = E / Gamepad-X\r\nMine
+        = Left Click / Gamepad B\r\nDrop torch = Q / Gamepad Y\r\nSwitch tool = Tab
+        / Gamepad LB"
       objectReference: {fileID: 0}
     - target: {fileID: 8263361498475676850, guid: 119b1105c09eae24f85c5c166e7af767, type: 3}
       propertyPath: m_SizeDelta.x
